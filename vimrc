@@ -1,3 +1,16 @@
+"==============================================================================
+" 处理 Gnome 终端不能使用 alt 快捷键
+" 参考：http://landcareweb.com/questions/8623/altjian-kuai-jie-jian-bu-gua-yong-yu-dai-you-vimde-gnomezhong-duan
+"==============================================================================
+let c='a'
+while c <= 'z'
+  exec "set <A-".c.">=\e".c
+  exec "imap \e".c." <A-".c.">"
+  let c = nr2char(1+char2nr(c))
+endw
+
+set timeout ttimeoutlen=50
+
 
 "==============================================================================
 " vim 内置配置 
@@ -10,7 +23,8 @@
 " 关闭兼容模式
 set nocompatible
 
-set nu " 设置行号
+set number " 设置绝对行号
+set relativenumber " 设置相对行号
 set cursorline "突出显示当前行
 " set cursorcolumn " 突出显示当前列
 set showmatch " 显示括号匹配
@@ -23,15 +37,24 @@ set autoindent " 继承前一行的缩进方式，适用于多行注释
 " 定义快捷键的前缀，即<Leader>
 let mapleader=";" 
 
+" 自定义快捷键
+
 " ==== 系统剪切板复制粘贴 ====
 " v 模式下复制内容到系统剪切板
-vmap <Leader>c "+yy
+vmap <M-c> "+yy
 " n 模式下复制一行到系统剪切板
-nmap <Leader>c "+yy
+nmap <M-c> "+yy
 " n 模式下粘贴系统剪切板的内容
-nmap <Leader>v "+p
+nmap <M-v> "+p
 
-" 开启实时搜索
+" 修改默认的区域切换如ctrl+w+h 奇幻到左侧， 依次是 左右上下
+nmap <M-h> <C-w>h
+nmap <M-l> <C-w>l
+nmap <M-k> <C-w>k
+nmap <M-j> <C-w>j
+
+
+"开启实时搜索
 set incsearch
 " 搜索时大小写不敏感
 set ignorecase
@@ -42,12 +65,16 @@ filetype plugin indent on    " 启用自动补全
 " 退出插入模式指定类型的文件自动保存
 au InsertLeave *.go,*.sh,*.php write
 
+
 "==============================================================================
 " 插件配置 
 "==============================================================================
 
 " 插件开始的位置
 call plug#begin('~/.vim/plugged')
+
+" Vim 中文文档
+Plug 'yianwillis/vimcdoc'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 " 可以快速对齐的插件
@@ -140,6 +167,9 @@ let g:go_highlight_generate_tags = 1
 
 let g:godef_split=2
 
+" 直接通过 go run 执行当前文件
+autocmd FileType go nmap <leader>r :GoRun %<CR>
+
 
 "==============================================================================
 " NERDTree 插件
@@ -147,6 +177,8 @@ let g:godef_split=2
 
 " 打开和关闭NERDTree快捷键
 map <F10> :NERDTreeToggle<CR>
+nmap <M-m> :NERDTreeFind<CR>
+
 " 显示行号
 let NERDTreeShowLineNumbers=1
 " 打开文件时是否显示目录
@@ -217,6 +249,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 let g:NERDTreeShowIgnoredStatus = 1
+nmap <Leader>pwd :NERDTreeCWD<CR>
 
 
 
@@ -225,15 +258,17 @@ let g:NERDTreeShowIgnoredStatus = 1
 "==============================================================================
 
 " make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<space>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:ycm_key_list_select_completion = ['<M-w>', '<DOWN>']
+let g:ycm_key_list_previous_completion = ['<M-d>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<M-w>'
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
+" 关闭了提示再次触发的快捷键
+let g:ycm_key_invoke_completion = '<Leader>,'
 
 "==============================================================================
 "  其他插件配置
@@ -286,4 +321,21 @@ if has('gui_running')
 	:nn <M-8> 8gt
     :nn <M-9> 9gt
     :nn <M-0> :tablast<CR>
+
+endif
+
+
+"==============================================================================
+" 光标随着插入模式改变形状
+" 参考： https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
+"==============================================================================
+if has("autocmd")
+	au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+	au InsertEnter,InsertChange *
+		\ if v:insertmode == 'i' |
+		\   silent execute '!echo -ne "\e[6 q"' | redraw! |
+		\ elseif v:insertmode == 'r' |
+		\   silent execute '!echo -ne "\e[4 q"' | redraw! |
+		\ endif
+	au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
