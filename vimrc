@@ -193,7 +193,7 @@ let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 let NERDTreeShowBookmarks=2
 
 " 在终端启动vim时，共享NERDTree
-let g:nerdtree_tabs_open_on_console_startup=1
+" let g:nerdtree_tabs_open_on_console_startup=1
 
 
 "==============================================================================
@@ -339,3 +339,13 @@ if has("autocmd")
 		\ endif
 	au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
+
+
+"==============================================================================
+" vim 的 session 管理
+"==============================================================================
+"
+" 自动保存 session
+autocmd VimLeave * mks! ~/.vim/session.vim
+" 加载 session 的快捷键
+nmap <Leader>his :source ~/.vim/session.vim<CR>
