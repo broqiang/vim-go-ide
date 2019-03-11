@@ -52,7 +52,14 @@ nmap <M-h> <C-w>h
 nmap <M-l> <C-w>l
 nmap <M-k> <C-w>k
 nmap <M-j> <C-w>j
+" 作用和上面一样，只不过是使用的 Leader
+nmap <Leader>h <C-w>h
+nmap <Leader>l <C-w>l
+nmap <Leader>k <C-w>k
+nmap <Leader>j <C-w>j
 
+nmap <Leader>nu :set relativenumber<CR>
+nmap <Leader>nn :set norelativenumber<CR>
 
 "开启实时搜索
 set incsearch
@@ -132,6 +139,9 @@ Plug 'dgryski/vim-godef'
 " markdown 插件
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.vim'
+
+" 自动生成注释的插件
+Plug 'scrooloose/nerdcommenter'
 
 " 插件结束的位置，插件全部放在此行上面
 call plug#end()
@@ -258,9 +268,9 @@ nmap <Leader>pwd :NERDTreeCWD<CR>
 "==============================================================================
 
 " make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<M-w>', '<DOWN>']
-let g:ycm_key_list_previous_completion = ['<M-d>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<M-w>'
+let g:ycm_key_list_select_completion = ['<M-j>', '<DOWN>']
+let g:ycm_key_list_previous_completion = ['<M-k>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<M-j>'
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -289,6 +299,12 @@ map <silent> <F6> <Plug>StopMarkdownPreview
 :nn <Leader>8 8gt
 :nn <Leader>9 8gt
 :nn <Leader>0 :tablast<CR>
+
+" 自动注释的时候添加空格
+let g:NERDSpaceDelims=1
+
+" 有道词典插件
+map <M-t> :Ydc<CR>
 
 
 "==============================================================================
@@ -349,3 +365,4 @@ endif
 autocmd VimLeave * mks! ~/.vim/session.vim
 " 加载 session 的快捷键
 nmap <Leader>his :source ~/.vim/session.vim<CR>
+
