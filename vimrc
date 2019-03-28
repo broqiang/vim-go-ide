@@ -122,12 +122,8 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " 配色方案
-" colorscheme neodark
-Plug 'KeitaNakamura/neodark.vim'
-" colorscheme monokai
-Plug 'crusoexia/vim-monokai'
-" colorscheme github 
-Plug 'acarapetis/vim-colors-github'
+" colorscheme gruvbox 
+Plug 'morhetz/gruvbox'
 " colorscheme one 
 Plug 'rakr/vim-one'
 
@@ -154,8 +150,9 @@ call plug#end()
 " 开启24bit的颜色，开启这个颜色会更漂亮一些
 set termguicolors
 " 配色方案, 可以从上面插件安装中的选择一个使用 
-colorscheme one " 主题
-set background=dark " 主题背景 dark-深色; light-浅色
+colorscheme gruvbox " gruvbox " 主题
+" colorscheme one " 主题
+set background=light " 主题背景 dark-深色; light-浅色
 
 
 "==============================================================================
@@ -203,7 +200,7 @@ let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 let NERDTreeShowBookmarks=2
 
 " 在终端启动vim时，共享NERDTree
-" let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=1
 
 
 "==============================================================================
@@ -272,13 +269,16 @@ let g:ycm_key_list_select_completion = ['<M-j>', '<DOWN>']
 let g:ycm_key_list_previous_completion = ['<M-k>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<M-j>'
 
+" 关闭了提示再次触发的快捷键
+let g:ycm_key_invoke_completion = '<Leader>,'
+
+"==============================================================================
+" UltiSnips 插件
+"==============================================================================
 " better key bindings for UltiSnipsExpandTrigger
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-" 关闭了提示再次触发的快捷键
-let g:ycm_key_invoke_completion = '<Leader>,'
 
 "==============================================================================
 "  其他插件配置
@@ -306,13 +306,19 @@ let g:NERDSpaceDelims=1
 " 有道词典插件
 map <M-t> :Ydc<CR>
 
+" 自动切换到当前文件所在的目录 cdpath
+map <Leader>cd :cd %:h<CR>
+
 
 "==============================================================================
 " GVim 的配置
 "==============================================================================
 " 如果不使用 GVim ，可以不用配置下面的配置
 if has('gui_running')
-    colorscheme one
+	" colorscheme gruvbox 
+	colorscheme gruvbox
+	set background=light " 主题背景 dark-深色; light-浅色
+
 	" 设置启动时窗口的大小
 	set lines=999 columns=999 linespace=4
 
@@ -365,4 +371,3 @@ endif
 autocmd VimLeave * mks! ~/.vim/session.vim
 " 加载 session 的快捷键
 nmap <Leader>his :source ~/.vim/session.vim<CR>
-
