@@ -150,8 +150,8 @@ call plug#end()
 " 开启24bit的颜色，开启这个颜色会更漂亮一些
 set termguicolors
 " 配色方案, 可以从上面插件安装中的选择一个使用 
-colorscheme gruvbox " gruvbox " 主题
-" colorscheme one " 主题
+" colorscheme gruvbox " gruvbox " 主题
+colorscheme one " 主题
 set background=light " 主题背景 dark-深色; light-浅色
 
 
@@ -189,7 +189,7 @@ nmap <M-m> :NERDTreeFind<CR>
 " 显示行号
 let NERDTreeShowLineNumbers=1
 " 打开文件时是否显示目录
-let NERDTreeAutoCenter=1
+let NERDTreeAutoCenter=0
 " 是否显示隐藏文件
 let NERDTreeShowHidden=0
 " 设置宽度
@@ -200,7 +200,7 @@ let NERDTreeIgnore=['\.pyc','\~$','\.swp']
 let NERDTreeShowBookmarks=2
 
 " 在终端启动vim时，共享NERDTree
-let g:nerdtree_tabs_open_on_console_startup=1
+" let g:nerdtree_tabs_open_on_console_startup=1
 
 
 "==============================================================================
