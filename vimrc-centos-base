@@ -1,4 +1,4 @@
-" 这是一份基于 Ubuntu 18.04 的配置， 其他环境未测试
+" 这是一份 CentOS 7 下的基础配置
 "
 "==============================================================================
 " 处理 Gnome 终端不能使用 alt 快捷键
@@ -32,8 +32,6 @@ set cursorline "突出显示当前行
 set showmatch " 显示括号匹配
 
 " tab 缩进
-set tabstop=4 " 设置Tab长度为4空格
-set shiftwidth=4 " 设置自动缩进长度为4空格
 set autoindent " 继承前一行的缩进方式，适用于多行注释
 
 " 定义快捷键的前缀，即<Leader>
@@ -72,7 +70,7 @@ syntax on                    " 开启文件类型侦测
 filetype plugin indent on    " 启用自动补全
 
 " 退出插入模式指定类型的文件自动保存
-au InsertLeave *.go,*.sh,*.php write
+au InsertLeave *.go,*.sh,*.php,*.c write
 
 
 "==============================================================================
@@ -129,11 +127,6 @@ Plug 'morhetz/gruvbox'
 " colorscheme one 
 Plug 'rakr/vim-one'
 
-" go 主要插件
-Plug 'fatih/vim-go', { 'tag': '*' }
-" go 中的代码追踪，输入 gd 就可以自动跳转
-Plug 'dgryski/vim-godef'
-
 " markdown 插件
 Plug 'iamcco/mathjax-support-for-mkdp'
 Plug 'iamcco/markdown-preview.vim'
@@ -155,30 +148,6 @@ set termguicolors
 " colorscheme gruvbox " gruvbox " 主题
 colorscheme one " 主题
 set background=light " 主题背景 dark-深色; light-浅色
-
-
-"==============================================================================
-" vim-go 插件
-"==============================================================================
-let g:go_fmt_command = "goimports" " 格式化将默认的 gofmt 替换
-let g:go_autodetect_gopath = 1
-let g:go_list_type = "quickfix"
-
-let g:go_version_warning = 1
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_generate_tags = 1
-
-let g:godef_split=2
-
-" 直接通过 go run 执行当前文件
-autocmd FileType go nmap <leader>r :GoRun %<CR>
-
 
 "==============================================================================
 " NERDTree 插件
@@ -211,35 +180,6 @@ let NERDTreeShowBookmarks=2
 
 " majutsushi/tagbar 插件打开关闭快捷键
 nmap <F9> :TagbarToggle<CR>
-
-let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
-
 
 "==============================================================================
 "  nerdtree-git-plugin 插件
