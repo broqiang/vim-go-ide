@@ -128,6 +128,7 @@ Plug 'honza/vim-snippets'
 Plug 'morhetz/gruvbox'
 " colorscheme one 
 Plug 'rakr/vim-one'
+Plug 'altercation/vim-colors-solarized'
 
 " go 主要插件
 Plug 'fatih/vim-go', { 'tag': '*' }
@@ -153,7 +154,7 @@ call plug#end()
 set termguicolors
 " 配色方案, 可以从上面插件安装中的选择一个使用 
 " colorscheme gruvbox " gruvbox " 主题
-colorscheme one " 主题
+colorscheme solarized " 主题
 set background=light " 主题背景 dark-深色; light-浅色
 
 
