@@ -154,7 +154,7 @@ call plug#end()
 set termguicolors
 " 配色方案, 可以从上面插件安装中的选择一个使用 
 " colorscheme gruvbox " gruvbox " 主题
-colorscheme solarized " 主题
+colorscheme gruvbox " 主题
 set background=light " 主题背景 dark-深色; light-浅色
 
 
@@ -175,7 +175,11 @@ let g:go_highlight_extra_types = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_generate_tags = 1
 
-let g:godef_split=2
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+let g:go_def_mapping_enabled = 1
+let g:go_code_completion_enabled = 1
+
 
 " 直接通过 go run 执行当前文件
 autocmd FileType go nmap <leader>r :GoRun %<CR>
@@ -311,6 +315,10 @@ map <M-t> :Ydc<CR>
 
 " 自动切换到当前文件所在的目录 cdpath
 map <Leader>cd :cd %:h<CR>
+
+" 退出
+map <Leader>q :q<CR>
+map <Leader>wq :wq<CR>
 
 
 "==============================================================================
