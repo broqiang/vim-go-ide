@@ -608,3 +608,19 @@ if has("autocmd")
 	au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
 ```
+
+## 错误处理
+
+### 缺少
+
+当使用 F9 的时候， 出现下面的错误：
+
+```bash
+Taglist: Exuberant ctags (http://ctags.sf.net) not found in PATH. Plugin is not loaded
+```
+
+解决方法： 
+
+```bash
+sudo apt install ctags
+```
