@@ -6,16 +6,16 @@
 "==============================================================================
 let c='a'
 while c <= 'z'
-  exec "set <A-".c.">=\e".c
-  exec "imap \e".c." <A-".c.">"
-  let c = nr2char(1+char2nr(c))
+	exec "set <A-".c.">=\e".c
+	exec "imap \e".c." <A-".c.">"
+	let c = nr2char(1+char2nr(c))
 endw
 
 set timeout ttimeoutlen=50
 
 
 "==============================================================================
-" vim 内置配置 
+" vim 内置配置
 "==============================================================================
 
 " 设置 vimrc 修改保存后立刻生效，不用在重新打开
@@ -37,7 +37,7 @@ set shiftwidth=4 " 设置自动缩进长度为4空格
 set autoindent " 继承前一行的缩进方式，适用于多行注释
 
 " 定义快捷键的前缀，即<Leader>
-let mapleader=";" 
+let mapleader=";"
 
 " 自定义快捷键
 
@@ -76,7 +76,7 @@ au InsertLeave *.go,*.sh,*.php write
 
 
 "==============================================================================
-" 插件配置 
+" 插件配置
 "==============================================================================
 
 " 插件开始的位置
@@ -124,9 +124,9 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " 配色方案
-" colorscheme gruvbox 
+" colorscheme gruvbox
 Plug 'morhetz/gruvbox'
-" colorscheme one 
+" colorscheme one
 Plug 'rakr/vim-one'
 Plug 'altercation/vim-colors-solarized'
 
@@ -142,17 +142,27 @@ Plug 'iamcco/markdown-preview.vim'
 " 自动生成注释的插件
 Plug 'scrooloose/nerdcommenter'
 
+" 强大的文件搜索插件
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+
+" 格式化代码插件
+" 这个插件特定语言需要额外支持， 比如格式化 json， 需要 js-beautify
+" 安装可以 yay -S js-beautify(archlinux) 或者 npm install -g js-beautify
+" 更多支持参考： https://github.com/Chiel92/vim-autoformat#default-formatprograms
+Plug 'Chiel92/vim-autoformat'
+
 " 插件结束的位置，插件全部放在此行上面
 call plug#end()
 
 
 "==============================================================================
-" 主题配色 
+" 主题配色
 "==============================================================================
 
 " 开启24bit的颜色，开启这个颜色会更漂亮一些
 set termguicolors
-" 配色方案, 可以从上面插件安装中的选择一个使用 
+" 配色方案, 可以从上面插件安装中的选择一个使用
 " colorscheme gruvbox " gruvbox " 主题
 colorscheme gruvbox " 主题
 set background=light " 主题背景 dark-深色; light-浅色
@@ -218,54 +228,52 @@ let NERDTreeShowBookmarks=2
 nmap <F9> :TagbarToggle<CR>
 
 let g:tagbar_type_go = {
-	\ 'ctagstype' : 'go',
-	\ 'kinds'     : [
-		\ 'p:package',
-		\ 'i:imports:1',
-		\ 'c:constants',
-		\ 'v:variables',
-		\ 't:types',
-		\ 'n:interfaces',
-		\ 'w:fields',
-		\ 'e:embedded',
-		\ 'm:methods',
-		\ 'r:constructor',
-		\ 'f:functions'
-	\ ],
-	\ 'sro' : '.',
-	\ 'kind2scope' : {
-		\ 't' : 'ctype',
-		\ 'n' : 'ntype'
-	\ },
-	\ 'scope2kind' : {
-		\ 'ctype' : 't',
-		\ 'ntype' : 'n'
-	\ },
-	\ 'ctagsbin'  : 'gotags',
-	\ 'ctagsargs' : '-sort -silent'
-\ }
+			\ 'ctagstype' : 'go',
+			\ 'kinds'     : [
+			\ 'p:package',
+			\ 'i:imports:1',
+			\ 'c:constants',
+			\ 'v:variables',
+			\ 't:types',
+			\ 'n:interfaces',
+			\ 'w:fields',
+			\ 'e:embedded',
+			\ 'm:methods',
+			\ 'r:constructor',
+			\ 'f:functions'
+			\ ],
+			\ 'sro' : '.',
+			\ 'kind2scope' : {
+			\ 't' : 'ctype',
+			\ 'n' : 'ntype'
+			\ },
+			\ 'scope2kind' : {
+			\ 'ctype' : 't',
+			\ 'ntype' : 'n'
+			\ },
+			\ 'ctagsbin'  : 'gotags',
+			\ 'ctagsargs' : '-sort -silent'
+			\ }
 
 
 "==============================================================================
 "  nerdtree-git-plugin 插件
 "==============================================================================
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
-    \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
+			\ "Modified"  : "✹",
+			\ "Staged"    : "✚",
+			\ "Untracked" : "✭",
+			\ "Renamed"   : "➜",
+			\ "Unmerged"  : "═",
+			\ "Deleted"   : "✖",
+			\ "Dirty"     : "✗",
+			\ "Clean"     : "✔︎",
+			\ 'Ignored'   : '☒',
+			\ "Unknown"   : "?"
+			\ }
 
 let g:NERDTreeShowIgnoredStatus = 1
 nmap <Leader>pwd :NERDTreeCWD<CR>
-
-
 
 "==============================================================================
 "  Valloric/YouCompleteMe 插件
@@ -307,18 +315,20 @@ map <silent> <F6> <Plug>StopMarkdownPreview
 :nn <Leader>9 8gt
 :nn <Leader>0 :tablast<CR>
 
+:nn <M-1> 1gt
+:nn <M-2> 2gt
+:nn <M-3> 3gt
+:nn <M-4> 4gt
+:nn <M-5> 5gt
+:nn <M-6> 6gt
+:nn <M-7> 7gt
+:nn <M-8> 8gt
+:nn <M-9> 9gt
+:nn <M-0> :tablast<CR>
+
 " 自动注释的时候添加空格
 let g:NERDSpaceDelims=1
 
-" 有道词典插件
-map <M-t> :Ydc<CR>
-
-" 自动切换到当前文件所在的目录 cdpath
-map <Leader>cd :cd %:h<CR>
-
-" 退出
-map <Leader>q :q<CR>
-map <Leader>wq :wq<CR>
 
 
 "==============================================================================
@@ -326,7 +336,7 @@ map <Leader>wq :wq<CR>
 "==============================================================================
 " 如果不使用 GVim ，可以不用配置下面的配置
 if has('gui_running')
-	" colorscheme gruvbox 
+	" colorscheme gruvbox
 	colorscheme gruvbox
 	set background=light " 主题背景 dark-深色; light-浅色
 
@@ -334,7 +344,7 @@ if has('gui_running')
 	set lines=999 columns=999 linespace=4
 
 	" 设置字体及大小
-    set guifont=Roboto\ Mono\ 13
+	set guifont=Roboto\ Mono\ 13
 
 	set guioptions-=m " 隐藏菜单栏
 	set guioptions-=T " 隐藏工具栏
@@ -342,18 +352,8 @@ if has('gui_running')
 	set guioptions-=r " 隐藏右侧滚动条
 	set guioptions-=b " 隐藏底部滚动条
 
-	" 在 gvim 下不会和 terminal 的 alt+数字的快捷键冲突，
-	" 所以将 tab 切换配置一份 alt+数字的快捷键
-	:nn <M-1> 1gt
-	:nn <M-2> 2gt
-	:nn <M-3> 3gt
-	:nn <M-4> 4gt
-	:nn <M-5> 5gt
-	:nn <M-6> 6gt
-	:nn <M-7> 7gt
-	:nn <M-8> 8gt
-    :nn <M-9> 9gt
-    :nn <M-0> :tablast<CR>
+	set guifont=Fira\ Code\ 14
+	set lines=999 columns=999
 
 endif
 
@@ -365,20 +365,32 @@ endif
 if has("autocmd")
 	au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
 	au InsertEnter,InsertChange *
-		\ if v:insertmode == 'i' |
-		\   silent execute '!echo -ne "\e[6 q"' | redraw! |
-		\ elseif v:insertmode == 'r' |
-		\   silent execute '!echo -ne "\e[4 q"' | redraw! |
-		\ endif
-	au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+				\ if v:insertmode == 'i' |
+				\   silent execute '!echo -ne "\e[6 q"' | redraw! |
+				\ elseif v:insertmode == 'r' |
+				\   silent execute '!echo -ne "\e[4 q"' | redraw! |
+				\ endif
 endif
 
 
 "==============================================================================
-" vim 的 session 管理
+" 自定义的额外配置 
 "==============================================================================
 "
 " 自动保存 session
 autocmd VimLeave * mks! ~/.vim/session.vim
 " 加载 session 的快捷键
 nmap <Leader>his :source ~/.vim/session.vim<CR>
+
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-S-i> :Autoformat<CR>
+
+" 有道词典插件
+map <M-t> :Ydc<CR>
+
+" 自动切换到当前文件所在的目录 cdpath
+map <Leader>cd :cd %:h<CR>
+
+" 退出
+map <Leader>q :q<CR>
+map <Leader>wq :wq<CR>
