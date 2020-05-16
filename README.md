@@ -232,7 +232,7 @@ call plug#end()
 
 这个插件是用来自动完成的，不过需要手动做一些额外的配置
 
-a. 安装以来关系
+a. 安装依赖关系
 
 ```bash
 sudo apt install build-essential cmake python3-dev
