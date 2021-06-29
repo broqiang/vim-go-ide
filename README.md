@@ -37,7 +37,8 @@ PS: 安装时候看一下结果， 因为包都是从 github 上下载的， 因
 Plug 'morhetz/gruvbox'
 ```
 
-- [morhetz/gruvbox](https://github.com/morhetz/gruvbox) 主题配色
++ [morhetz/gruvbox 主题配色](https://github.com/morhetz/gruvbox) 
 
 	更多主题可以参考 [这里](https://zhuanlan.zhihu.com/p/58188561)
 
++ []()

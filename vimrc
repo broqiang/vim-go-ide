@@ -1,6 +1,42 @@
+" 基于 Ubuntu 20.04 的配置， 其他发行版本未做测试
+
 " ======================== 一些初始配置 ===========================
-" 显示行号
-set nu
+" 关闭兼容模式, 如果需要使用原始的 vi 模式， 配置： set compatible
+" 默认就是关闭的， 不过就无法使用 vim 的高级功能，包括下面的配置
+set nocompatible
+
+filetype plugin indent on
+
+" 定义快捷键的前缀，即<Leader> ， 默认是 \ ， 按的时候不太方便
+let mapleader=";"
+
+" 行号相关配置
+set number " 显示绝对行号
+set relativenumber " 显示相对行号， 会覆盖上面选项
+set cursorline " 突出显示当前所在行
+" 设置切换绝对行号和相对行号的快捷键， 这个需要的时候切换提高效率
+" 这里默认是相对行号， 需要绝对行号时候可以通过快捷键修改
+nmap <Leader>nn :set relativenumber<CR>
+nmap <Leader>nu :set norelativenumber<CR>
+
+" tab 缩进
+" 设置Tab长度为4空格， 只是显示， 真实的还是一个 tab
+set tabstop=4 
+" 设置输入的 tab 转换成 4 个空格，这里只允许指定文件启用这个设置
+au BufRead,BufNewFile *.md call SetTabToSpace()
+function SetTabToSpace()
+    set shiftwidth=4  " 转换 4 个空格
+    set expandtab     " 实时生效，配合 shiftwidth 
+	set softtabstop=4 " 删除时候的行为， 也会同时删除 4 个空格
+endfunction
+" 继承前一行的缩进方式
+set autoindent
+
+" 开启实时搜索，随着你输入查询字串，显示不同的搜索结果
+set incsearch
+" 搜索时大小写不敏感
+set ignorecase
+
 " =================================================================
 
 
@@ -31,7 +67,7 @@ set background=light
 " ======================== markdwon 插件配置 ======================
 " 更多的配置见 https://github.com/iamcco/markdown-preview.nvim
 " vim 打开markdown 文档是否自动预览， 0 - 否， 1 - 是， 默认： 0
-let g:mkdp_auto_start = 1
+" let g:mkdp_auto_start = 1
 
 " 关闭 markdown 是否自动关闭预览文件， 0 - 否， 1 - 是， 默认： 1
 " let g:mkdp_auto_close = 1
