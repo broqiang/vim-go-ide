@@ -23,7 +23,13 @@ call plug#begin('~/.vim/plug')
 call plug#end()
 ```
 
-## 所有需要的插件
+配置完成后将 `.vimrc` 文件保存，再次打开， 然后输入 `:PlugInstall`，即可安装
+
+PS: 安装时候看一下结果， 因为包都是从 github 上下载的， 因为网络原因不一定成功。
+
+
+
+## 插件配置
 
 按照这个格式放在上面的 begin 和 end 之间即可， 如： 
 
@@ -34,3 +40,4 @@ Plug 'morhetz/gruvbox'
 - [morhetz/gruvbox](https://github.com/morhetz/gruvbox) 主题配色
 
 	更多主题可以参考 [这里](https://zhuanlan.zhihu.com/p/58188561)
+
