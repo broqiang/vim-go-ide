@@ -1,5 +1,7 @@
 # vim 开发环境配置
 
+
+
 因为特殊原因，一年多没有摸到电脑了，准备写代码了，先配置下环境
 
 ## 配置插件管理器
@@ -39,6 +41,14 @@ Plug 'morhetz/gruvbox'
 
 + [morhetz/gruvbox 主题配色](https://github.com/morhetz/gruvbox) 
 
-	更多主题可以参考 [这里](https://zhuanlan.zhihu.com/p/58188561)
+    更多主题可以参考 [这里](https://zhuanlan.zhihu.com/p/58188561)
 
-+ []()
++ [vim-airline vim 窗口状态栏](https://github.com/vim-airline/vim-airline)
+
++ [vim-airline-themes 状态栏的主题](https://github.com/vim-airline/vim-airline-themes)
+
++ [preservim/nerdtree vim 中文件系统浏览器](https://github.com/preservim/nerdtree)
+
++ [Xuyuanp/nerdtree-git-plugin 在 NERDTree 中显示 git 状态](https://github.com/Xuyuanp/nerdtree-git-plugin)
+    
++ [ryanoasis/vim-devicons 在 NERDTree 中显示文件图标](https://github.com/ryanoasis/vim-devicons)
