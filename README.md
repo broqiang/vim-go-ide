@@ -51,3 +51,10 @@ Plug 'morhetz/gruvbox'
 
 + [Xuyuanp/nerdtree-git-plugin 在 NERDTree 中显示 git 状态](https://github.com/Xuyuanp/nerdtree-git-plugin)
     
++ [ryanoasis/vim-devicons 显示图标，包括导航栏和状态栏](https://github.com/ryanoasis/vim-devicons)
+
++ [airblade/vim-gitgutter 文档中显示 git 信息](https://github.com/airblade/vim-gitgutter)
+
++ [iamcco/markdown-preview.nvim markdown 文档预览](https://github.com/iamcco/markdown-preview.nvim)
+
++ [SirVer/ultisnips](https://github.com/SirVer/ultisnips) 和 [honza/vim-snippets](https://honza/vim-snippets) 两个插件配合， 生成代码片段
