@@ -75,6 +75,8 @@ nmap <A-j> <C-w>j
 " 插件开始的位置
 call plug#begin('~/.vim/plug')
 
+set encoding=UTF-8
+
 " 主题配色 
 Plug 'morhetz/gruvbox' 
 
@@ -87,6 +89,13 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 " nerdtree 中显示 git 状态
 Plug 'Xuyuanp/nerdtree-git-plugin'
+" nerdtree 中语法高亮
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" 可以在导航中显示图标， 不过需要有字体支持，否则就是乱码
+" https://github.com/ryanoasis/nerd-fonts
+" 终端也需要字体配合，如我使用的是 firacode nerd font Regular
+" 喜欢其他字体也可以，不过要使用带 nerd font 的字体
+Plug 'ryanoasis/vim-devicons'
 
 " markdown 预览
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
@@ -104,6 +113,24 @@ set termguicolors
 colorscheme gruvbox 
 " 主题背景 dark-深色; light-浅色
 set background=light 
+" =================================================================
+
+
+" ======================== nerdtree 插件配置 ======================
+" 设置一个打开的快捷键， 如我的就是 " + b 打开， 再按一次关闭
+nnoremap <leader>b :NERDTreeToggle<CR>
+" 导航目录展开的符号
+let g:NERDTreeDirArrowExpandable = '▸' 
+" 导航目录关闭的符号
+let g:NERDTreeDirArrowCollapsible = '▾' 
+" 默认显示行号
+let NERDTreeShowLineNumbers=1
+" 打开文件时是否显示目录， 1- 显示 0- 不显示
+let NERDTreeAutoCenter=1
+
+let g:NERDTreeFileExtensionHighlightFullName = 1
+let g:NERDTreeExactMatchHighlightFullName = 1
+let g:NERDTreePatternMatchHighlightFullName = 1
 " =================================================================
 
 
@@ -149,18 +176,6 @@ let g:mkdp_echo_preview_url = 1
 " markdwon 的快捷键
 map <silent> <F5> <Plug>MarkdownPreview
 map <silent> <F6> <Plug>StopMarkdownPreview
-" =================================================================
-
-
-" ======================== nerdtree 插件配置 ======================
-" 设置一个打开的快捷键， 如我的就是 " + b 打开， 再按一次关闭
-nnoremap <leader>b :NERDTreeToggle<CR>
-" 导航目录展开的符号
-let g:NERDTreeDirArrowExpandable = '▸' 
-" 导航目录关闭的符号
-let g:NERDTreeDirArrowCollapsible = '▾' 
-" 默认显示行号
-let NERDTreeShowLineNumbers=1
 " =================================================================
 
 
