@@ -13,6 +13,10 @@ filetype plugin indent on
 " 定义快捷键的前缀，即<Leader> ， 默认是 \ ， 按的时候不太方便
 let mapleader=";"
 
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
 " 行列相关配置
 set number " 显示绝对行号
 set relativenumber " 显示相对行号， 会覆盖上面选项
@@ -124,8 +128,8 @@ let g:mkdp_echo_preview_url = 1
 
 
 " ======================== nerdtree 插件配置 ======================
-" 设置一个打开的快捷键， 如我的就是 " + n 打开
-nnoremap <leader>b :NERDTreeFocus<CR>
+" 设置一个打开的快捷键， 如我的就是 " + b 打开， 再按一次关闭
+nnoremap <leader>b :NERDTreeToggle<CR>
 " 导航目录展开的符号
 let g:NERDTreeDirArrowExpandable = '▸' 
 " 导航目录关闭的符号
