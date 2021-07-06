@@ -133,7 +133,18 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 let NERDTreeShowLineNumbers=1
 " 打开文件时是否显示目录， 1- 显示 0- 不显示
 let NERDTreeAutoCenter=1
+" 是否显示隐藏文件
+let NERDTreeShowHidden=1
+" 设置宽度
+" let NERDTreeWinSize=31
+" 忽略一下文件的显示， 可以定义只隐藏指定文件或目录
+let NERDTreeIgnore=['\.pyc','\~$','\.swp','\.git']
+" =================================================================
 
+
+" ======================== nerdtree-git-plugin 插件 ===============
+" 是否显示忽略文件 1- 显示 0- 不显示 默认 0
+" let g:NERDTreeGitStatusShowIgnored = 1
 " =================================================================
 
 
@@ -181,4 +192,11 @@ map <silent> <F5> <Plug>MarkdownPreview
 map <silent> <F6> <Plug>StopMarkdownPreview
 " =================================================================
 
-
+let g:UltiSnipsExpandTrigger="<tab>"
+" 使用 tab 切换下一个触发点，shit+tab 上一个触发点
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
+" 可以用的片段列表
+let g:UltiSnipsListSnippets="<M-e>"
+" 使用 UltiSnipsEdit 命令时垂直分割屏幕
+" let g:UltiSnipsEditSplit="vertical"
