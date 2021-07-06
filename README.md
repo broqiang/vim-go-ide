@@ -51,4 +51,3 @@ Plug 'morhetz/gruvbox'
 
 + [Xuyuanp/nerdtree-git-plugin 在 NERDTree 中显示 git 状态](https://github.com/Xuyuanp/nerdtree-git-plugin)
     
-+ [ryanoasis/vim-devicons 在 NERDTree 中显示文件图标](https://github.com/ryanoasis/vim-devicons)

@@ -2,6 +2,20 @@
 " Plug 'iamcco/mathjax-support-for-mkdp'
 " 基于 Ubuntu 20.04 的配置， 其他发行版本未做测试
 
+"==============================================================================
+" 处理 Gnome 终端不能使用 alt 快捷键， 不做这个处理无法在 vim 中映射 alt
+" 的快捷键
+" 参考：http://landcareweb.com/questions/8623/altjian-kuai-jie-jian-bu-gua-yong-yu-dai-you-vimde-gnomezhong-duan
+"==============================================================================
+let c='a'
+while c <= 'z'
+	exec "set <A-".c.">=\e".c
+	exec "imap \e".c." <A-".c.">"
+	let c = nr2char(1+char2nr(c))
+endw
+
+set timeout ttimeoutlen=50
+
 " ======================== 一些初始配置 ===========================
 " 关闭兼容模式, 如果需要使用原始的 vi 模式， 配置： set compatible
 " 默认就是关闭的， 如果不管，就无法使用 vim 的高级功能，包括下面的配置
@@ -13,6 +27,7 @@ filetype plugin indent on
 " 定义快捷键的前缀，即<Leader> ， 默认是 \ ， 按的时候不太方便
 let mapleader=";"
 
+" 记住上次文件打开位置
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
@@ -47,6 +62,12 @@ set ignorecase
 
 " 退出插入模式指定类型的文件自动保存
 au InsertLeave *.go,*.md write
+
+" 修改默认的区域切换，如ctrl+w+h 切换到左侧， 依次是 左右上下
+nmap <M-h> <C-w>h
+nmap <M-l> <C-w>l
+nmap <A-k> <C-w>k
+nmap <A-j> <C-w>j
 
 " =================================================================
 
@@ -124,6 +145,10 @@ let g:airline#extensions#tabline#buffer_idx_mode = 1
 " 在启动 markdown 预览时是否在终端回显 url
 " 如显示： Preview page: http://127.0.0.1:8472/page/1
 let g:mkdp_echo_preview_url = 1
+
+" markdwon 的快捷键
+map <silent> <F5> <Plug>MarkdownPreview
+map <silent> <F6> <Plug>StopMarkdownPreview
 " =================================================================
 
 
@@ -134,6 +159,8 @@ nnoremap <leader>b :NERDTreeToggle<CR>
 let g:NERDTreeDirArrowExpandable = '▸' 
 " 导航目录关闭的符号
 let g:NERDTreeDirArrowCollapsible = '▾' 
+" 默认显示行号
+let NERDTreeShowLineNumbers=1
 " =================================================================
 
 
