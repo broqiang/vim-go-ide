@@ -1,5 +1,3 @@
-" latex数学公式支持
-" Plug 'iamcco/mathjax-support-for-mkdp'
 " 基于 Ubuntu 20.04 的配置， 其他发行版本未做测试
 
 "==============================================================================
@@ -68,6 +66,17 @@ nmap <M-h> <C-w>h
 nmap <M-l> <C-w>l
 nmap <A-k> <C-w>k
 nmap <A-j> <C-w>j
+
+" 系统剪切板复制粘贴， vim 使用系统剪切板需要 vim 支持
+" 查询可以通过 vim --version | grep clipboard 查看
+" 如果显示 +clipboard 就是支持， 如果是 -clipboard 就是不支持
+" ubuntu 可以直接安装 gui 包，提供支持 sudo apt install vim-gtk
+" normal 模式下复制到系统剪切板， 这里没有 "+yy 这样只能复制一行
+" 使用的时候可以 alt + c ， 然后再输入 yy ， 就是一行
+" 也可以在文件顶部， alt + c ， 然后再输入 yG ， 就是全部内容
+" 粘贴可以 alt + c ，然后输入 p， 就是为了省略不太好按的 "+ 组合
+nmap <M-c> "+
+vmap <M-c> "+
 
 " =================================================================
 
