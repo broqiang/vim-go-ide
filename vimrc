@@ -62,10 +62,13 @@ set ignorecase
 au InsertLeave *.go,*.md write
 
 " 修改默认的区域切换，如ctrl+w+h 切换到左侧， 依次是 左右上下
-nmap <M-h> <C-w>h
-nmap <M-l> <C-w>l
-nmap <A-k> <C-w>k
-nmap <A-j> <C-w>j
+" nmap <M-h> <C-w>h
+" nmap <M-l> <C-w>l
+" nmap <M-k> <C-w>k
+" nmap <M-j> <C-w>j
+
+" 全选
+nmap <leader>a ggvG$ 
 
 " 系统剪切板复制粘贴， vim 使用系统剪切板需要 vim 支持
 " 查询可以通过 vim --version | grep clipboard 查看
@@ -114,8 +117,12 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 " Plug 'iamcco/mathjax-support-for-mkdp'
 
 " 下面两个插件要配合使用，可以自动生成代码块
-Plug 'SirVer/ultisnips'   " 插件本身
+" B
+" Plug 'SirVer/ultisnips'   " 插件本身， 使用 coc-snippets 替换了
 Plug 'honza/vim-snippets' " 代码片段仓库
+
+" 代码自动完成插件
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " 插件结束的位置，插件全部放在此行上面
 call plug#end()
@@ -201,11 +208,82 @@ map <silent> <F5> <Plug>MarkdownPreview
 map <silent> <F6> <Plug>StopMarkdownPreview
 " =================================================================
 
-let g:UltiSnipsExpandTrigger="<tab>"
-" 使用 tab 切换下一个触发点，shit+tab 上一个触发点
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<S-tab>"
-" 可以用的片段列表
-let g:UltiSnipsListSnippets="<M-e>"
-" 使用 UltiSnipsEdit 命令时垂直分割屏幕
-" let g:UltiSnipsEditSplit="vertical"
+
+" ======================== coc.nvim 插件配置 ======================
+" 详细见 https://github.com/neoclide/coc.nvim#example-vim-configuration
+" 不清楚作用，推荐配置里面有，详细见 https://github.com/neoclide/coc.nvim/issues/649
+set nobackup
+set nowritebackup
+
+" 更改更新时间， 默认是 4000 ms
+set updatetime=300
+
+" 为消息留出更多的空间
+set cmdheight=2
+
+
+" 追踪到定义的位置
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+" 查看被谁引用
+nmap <silent> gr <Plug>(coc-references)
+
+" 预览窗口显示文档
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" 重命名的快捷操作
+nmap <leader>rn <Plug>(coc-rename)
+
+" 关闭提示后手动唤醒提示
+inoremap <silent><expr> <c-l> coc#refresh()
+" 通过回车展开代码片段
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" 可以通过 tab 键来切换提示列表选择
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" 代码提示列表选择， 将原本的 c-p 和 c-n 添加更习惯的方式
+inoremap <silent><expr> <M-k> "\<C-p>"
+inoremap <silent><expr> <M-j> "\<C-n>"
+
+" 格式化代码， 需要 lsp 支持
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" 修复当前选中的代码
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" 显示错误信息
+nmap <silent> <M-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <M-j> <Plug>(coc-diagnostic-next)
+
+" coc-go 的配置
+" 在保存的时候自动导包
+autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+
+
+" =================================================================
+
