@@ -1,9 +1,7 @@
 " 基于 Ubuntu 20.04 的配置， 其他发行版本未做测试
 
 "==============================================================================
-" 处理 Gnome 终端不能使用 alt 快捷键， 不做这个处理无法在 vim 中映射 alt
-" 的快捷键
-" 参考：http://landcareweb.com/questions/8623/altjian-kuai-jie-jian-bu-gua-yong-yu-dai-you-vimde-gnomezhong-duan
+" 处理 Gnome 终端不能使用 alt 快捷键， 不做这个处理无法在 vim 中映射 alt的快捷键
 "==============================================================================
 let c='a'
 while c <= 'z'
@@ -16,7 +14,7 @@ set timeout ttimeoutlen=50
 
 " ======================== 一些初始配置 ===========================
 " 关闭兼容模式, 如果需要使用原始的 vi 模式， 配置： set compatible
-" 默认就是关闭的， 如果不管，就无法使用 vim 的高级功能，包括下面的配置
+" 默认就是关闭的， 如果不关，就无法使用 vim 的高级功能，包括下面的配置
 set nocompatible
 
 " 打开文件类型检测
@@ -40,9 +38,10 @@ nmap <Leader>nu :set norelativenumber<CR>
 set cursorline " 突出显示当前所在行
 " set cursorcolumn " 突出显示当前列
 
-" tab 缩进
+" ==== tab 缩进
 " 设置Tab长度为4空格， 只是显示， 真实的还是一个 tab
 set tabstop=4 
+
 " 设置输入的 tab 转换成 4 个空格，这里只允许指定文件启用这个设置
 au BufRead,BufNewFile *.md call SetTabToSpace()
 function SetTabToSpace()
@@ -50,6 +49,7 @@ function SetTabToSpace()
     set expandtab     " 实时生效，配合 shiftwidth 
 	set softtabstop=4 " 删除时候的行为， 也会同时删除 4 个空格
 endfunction
+
 " 继承前一行的缩进方式
 set autoindent
 
@@ -61,11 +61,8 @@ set ignorecase
 " 退出插入模式指定类型的文件自动保存
 au InsertLeave *.go,*.md write
 
-" 修改默认的区域切换，如ctrl+w+h 切换到左侧， 依次是 左右上下
-" nmap <M-h> <C-w>h
-" nmap <M-l> <C-w>l
-" nmap <M-k> <C-w>k
-" nmap <M-j> <C-w>j
+" 保存文件时候自动去除行尾空格
+autocmd BufWritePre *.md,*.go :%s/\s\+$//e
 
 " 全选
 nmap <leader>a ggvG$ 
@@ -73,18 +70,21 @@ nmap <leader>a ggvG$
 " 系统剪切板复制粘贴， vim 使用系统剪切板需要 vim 支持
 " 查询可以通过 vim --version | grep clipboard 查看
 " 如果显示 +clipboard 就是支持， 如果是 -clipboard 就是不支持
-" ubuntu 可以直接安装 gui 包，提供支持 sudo apt install vim-gtk
+" ubuntu 可以直接安装 gui 包提供支持： sudo apt install vim-gtk
 " normal 模式下复制到系统剪切板， 这里没有 "+yy 这样只能复制一行
 " 使用的时候可以 alt + c ， 然后再输入 yy ， 就是一行
 " 也可以在文件顶部， alt + c ， 然后再输入 yG ， 就是全部内容
 " 粘贴可以 alt + c ，然后输入 p， 就是为了省略不太好按的 "+ 组合
 nmap <M-c> "+
-vmap <M-c> "+
+" 复制 v 模式的选中区域
+vmap <M-c> "+y
 
 " =================================================================
 
 
+"==============================================================================
 " 插件开始的位置
+"==============================================================================
 call plug#begin('~/.vim/plug')
 
 set encoding=UTF-8
@@ -126,6 +126,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " 插件结束的位置，插件全部放在此行上面
 call plug#end()
+"==============================================================================
 
 
 " ======================== 主题配色设置 ===========================
@@ -171,6 +172,8 @@ let g:airline_theme='light'
 " 安装字体后，启用这个选项后在状态栏可以看到图标
 " 需要先安装 powerline 字体才可以 sudo apt-get install fonts-powerline
 " 如果没有安装 powerline 字体不要启用这个选项，否则会显示乱码
+" 如果 vim-devicons 插件配置好了就可以忽略 powerline 字体，这个插件包含
+" 了字体图标，并且更加漂亮
 let g:airline_powerline_fonts = 1
 " 启动顶部的 tabline ， 可以显示打开的 buffers， 显示多 tab 标签
 let g:airline#extensions#tabline#enabled = 1
@@ -279,11 +282,7 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 nmap <silent> <M-k> <Plug>(coc-diagnostic-prev)
 nmap <silent> <M-j> <Plug>(coc-diagnostic-next)
 
-" coc-go 的配置
-" 在保存的时候自动导包
+" coc-go 保存的时候自动导包
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-
-
-
 " =================================================================
 
