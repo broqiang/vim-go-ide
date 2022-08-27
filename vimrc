@@ -1,4 +1,5 @@
 " 基于 Ubuntu 20.04 的配置， 其他发行版本未做测试
+" 最新修改基于 Debian 11， 其他发行版本未做测试
 
 "==============================================================================
 " 处理 Gnome 终端不能使用 alt 快捷键， 不做这个处理无法在 vim 中映射 alt的快捷键
@@ -79,6 +80,11 @@ nmap <M-c> "+
 " 复制 v 模式的选中区域
 vmap <M-c> "+y
 
+" 修改插入模式和普通模式光标的样式
+let &t_SI.="\e[5 q" "SI = INSERT mode
+let &t_SR.="\e[4 q" "SR = REPLACE mode
+let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
+
 " =================================================================
 
 
@@ -89,8 +95,10 @@ call plug#begin('~/.vim/plug')
 
 set encoding=UTF-8
 
-" 主题配色 
-Plug 'morhetz/gruvbox' 
+" 主题配色，下面几个可以使用哪个安装哪个
+" Plug 'morhetz/gruvbox' 
+" Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'sainnhe/gruvbox-material'
 
 " 状态栏插件，包括显示行号，列号，文件类型，文件名，以及Git状态
 Plug 'vim-airline/vim-airline'
@@ -104,7 +112,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 " 可以在导航中显示图标， 不过需要有字体支持，否则就是乱码
 " https://github.com/ryanoasis/nerd-fonts
-" 终端也需要字体配合，如我使用的是 firacode nerd font Regular
+" 终端也需要字体配合，如我使用的是 https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.1/RobotoMono.zip
 " 喜欢其他字体也可以，不过要使用带 nerd font 的字体
 Plug 'ryanoasis/vim-devicons'
 
@@ -133,7 +141,12 @@ call plug#end()
 " 开启24bit的颜色，开启这个颜色会更漂亮一些
 set termguicolors
 " 主题配色
-colorscheme gruvbox 
+" colorscheme gruvbox
+colorscheme gruvbox-material
+
+" gruvbox-material 背景色强度，可选： 'hard'`, `'medium'`, `'soft'
+let g:gruvbox_material_background = 'hard' " hard 背景色会更亮一些
+
 " 主题背景 dark-深色; light-浅色
 set background=light 
 " =================================================================
@@ -215,75 +228,150 @@ map <silent> <F6> <Plug>StopMarkdownPreview
 " ======================== coc.nvim 插件配置 ======================
 " 详细见 https://github.com/neoclide/coc.nvim#example-vim-configuration
 " 不清楚作用，推荐配置里面有，详细见 https://github.com/neoclide/coc.nvim/issues/649
+" Some servers have issues with backup files, see #649.
 set nobackup
 set nowritebackup
 
-" 更改更新时间， 默认是 4000 ms
+" 更新延时时间，默认是 4000 毫秒， 会感觉到延时，所以设置短一点
 set updatetime=300
 
-" 为消息留出更多的空间
-set cmdheight=2
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
 
-
-" 追踪到定义的位置
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-" 查看被谁引用
-nmap <silent> gr <Plug>(coc-references)
-
-" 预览窗口显示文档
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" 重命名的快捷操作
-nmap <leader>rn <Plug>(coc-rename)
-
-" 关闭提示后手动唤醒提示
-inoremap <silent><expr> <c-l> coc#refresh()
-" 通过回车展开代码片段
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" 可以通过 tab 键来切换提示列表选择
-inoremap <silent><expr> <TAB>
+" 选中下一个，默认是 tab ， 不太习惯，换成了 Alt-j
+inoremap <silent><expr> <M-j>
       \ coc#pum#visible() ? coc#pum#next(1):
       \ CheckBackspace() ? "\<Tab>" :
       \ coc#refresh()
+" 选中上一个， 默认是 Shift-Tab， 换成了 Alt-k
+inoremap <expr><M-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" 选中，默认是回车，改成了 TAB
+inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" 代码提示列表选择， 将原本的 c-p 和 c-n 添加更习惯的方式
-inoremap <silent><expr> <M-k> "\<C-p>"
-inoremap <silent><expr> <M-j> "\<C-n>"
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  " 提示关闭之后再次唤起
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
-" 格式化代码， 需要 lsp 支持
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
-" 修复当前选中的代码
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
-" 显示错误信息
-nmap <silent> <M-k> <Plug>(coc-diagnostic-prev)
-nmap <silent> <M-j> <Plug>(coc-diagnostic-next)
+" Run the Code Lens action on the current line.
+nmap <leader>cl  <Plug>(coc-codelens-action)
 
-" coc-go 保存的时候自动导包
-autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
-" =================================================================
+" Map function and class text objects
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+" Remap <C-f> and <C-b> for scroll float windows/popups.
+if has('nvim-0.4.0') || has('patch-8.2.0750')
+  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+endif
+
+" Use CTRL-S for selections ranges.
+" Requires 'textDocument/selectionRange' support of language server.
+nmap <silent> <C-s> <Plug>(coc-range-select)
+xmap <silent> <C-s> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocActionAsync('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
