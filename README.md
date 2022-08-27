@@ -401,3 +401,26 @@ autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.org
 ```
 
 这个文档未来不一定会及时更新，可以查看仓库中的 [vimrc 文件](./vimrc)
+
+## 报错处理
+
+### `[coc.nvim] build/index.js not found`
+
+报这个错误
+
+```bash
+[coc.nvim] build/index.js not found, please install dependencies and compile coc.nvim by: yarn install
+```
+
+本机有 node 和 yarn 环境，但是还是出现这个错误，原因没去研究，手动安装下 coc.nvim 依赖可以解决
+
+```bash
+# 如果没有 yarn 环境可以安装，有的话就跳过
+sudo apt install nodejs
+sudo npm install -g yarn
+
+# 下面是手动解决依赖
+cd ~/.vim/plugged/coc.nvim/
+yarn install
+yarn build
+```
